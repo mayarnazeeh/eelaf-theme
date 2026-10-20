@@ -4,7 +4,7 @@
    Description:  Child theme of Hello Elementor for the EELAF website.
    Author:       Mayar Nazeeh
    Template:     hello-elementor
-   Version:      1.0.1
+   Version:      1.0.4
    Text Domain:  eelaf-child
    */
 /* Sticky header (stronger than UAE's .ehf-header #masthead) */
@@ -12,9 +12,28 @@ body.ehf-header #masthead {
 	position: sticky;
 	top: 0;
 	z-index: 999;
+   
 }
 
 /* Push it below the WP admin bar when logged in */
 body.admin-bar.ehf-header #masthead {
 	top: 32px;
+}
+/* Mobile/tablet dropdown: span the full header width */
+@media (max-width: 1024px) {
+	/* Let the dropdown position itself against #masthead, not the tiny nav box */
+	body.ehf-header #masthead .elementor-element,
+	body.ehf-header #masthead .hfe-nav-menu {
+		position: static;
+	}
+
+	body.ehf-header #masthead nav.hfe-dropdown {
+		position: absolute;
+		top: 100%;
+		left: 0 !important;
+		width: 100% !important;
+      z-index: 1000;
+		padding: 0 20px 16px;
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+	}
 }
