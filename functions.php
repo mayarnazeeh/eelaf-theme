@@ -140,3 +140,55 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 
 	return ob_get_clean();
 } );
+/**
+ * [eelaf_feed limit="3"]
+ * Latest blog posts as small horizontal cards:
+ * thumbnail, designer name, post title, likes and comments.
+ */
+add_shortcode( 'eelaf_feed', function ( $atts ) {
+	$atts = shortcode_atts( array( 'limit' => 3 ), $atts, 'eelaf_feed' );
+
+	$posts = new WP_Query( array(
+		'post_type'           => 'post',
+		'posts_per_page'      => (int) $atts['limit'],
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+	) );
+
+	if ( ! $posts->have_posts() ) {
+		return '<p class="eelaf-empty">No posts yet.</p>';
+	}
+
+	ob_start();
+	echo '<div class="eelaf-feed">';
+
+	while ( $posts->have_posts() ) {
+		$posts->the_post();
+		$designer = get_field( 'designer' );
+		$name     = $designer ? get_the_title( $designer ) : get_the_author();  // fallback: WP author
+		$likes    = (int) get_field( 'likes' );
+		$comments = (int) get_comments_number();
+		?>
+		<a class="eelaf-feed-card" href="<?php the_permalink(); ?>">
+			<span class="eelaf-feed-card__thumb">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<?php the_post_thumbnail( 'thumbnail' ); ?>
+				<?php endif; ?>
+			</span>
+			<span class="eelaf-feed-card__body">
+				<span class="eelaf-feed-card__name"><?php echo esc_html( $name ); ?></span>
+				<span class="eelaf-feed-card__title">Published &ldquo;<?php echo esc_html( get_the_title() ); ?>&rdquo;</span>
+				<span class="eelaf-feed-card__stats">
+					<span>&#9825; <?php echo esc_html( eelaf_format_count( $likes ) ); ?></span>
+					<span>&#128172; <?php echo esc_html( $comments ); ?></span>
+				</span>
+			</span>
+		</a>
+		<?php
+	}
+
+	echo '</div>';
+	wp_reset_postdata();
+
+	return ob_get_clean();
+} );
