@@ -4,7 +4,7 @@
    Description:  Child theme of Hello Elementor for the EELAF website.
    Author:       Mayar Nazeeh
    Template:     hello-elementor
-   Version:      1.0.4
+   Version:      1.0.5
    Text Domain:  eelaf-child
    */
 /* Sticky header (stronger than UAE's .ehf-header #masthead) */
@@ -36,4 +36,72 @@ body.admin-bar.ehf-header #masthead {
 		padding: 0 20px 16px;
 		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 	}
+}
+/* ===== Designers section: [eelaf_designers] ===== */
+.eelaf-designers {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 24px;
+}
+
+.eelaf-designer-card {
+	display: grid;
+	grid-template-columns: 48px 1fr;
+	grid-template-areas:
+		"avatar name"
+		"meta   meta";
+	align-items: center;
+	gap: 12px;
+	padding: 16px 18px;
+	background: var(--e-global-color-accent, #F5E6EB);
+	border-radius: 14px;
+	box-shadow: 0 6px 16px rgba(22, 49, 118, 0.12);
+	text-decoration: none;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.eelaf-designer-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 10px 24px rgba(22, 49, 118, 0.18);
+}
+
+.eelaf-designer-card__avatar {
+	grid-area: avatar;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	font-family: "Playfair Display", serif;
+	font-size: 24px;
+	color: var(--e-global-color-primary, #163176);
+}
+
+.eelaf-designer-card__avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.eelaf-designer-card__name {
+	grid-area: name;
+	font-family: "Playfair Display", serif;
+	font-size: 18px;
+	color: var(--e-global-color-primary, #163176);
+}
+
+.eelaf-designer-card__meta {
+	grid-area: meta;
+	font-size: 12px;
+	color: var(--e-global-color-text, #6C6666);
+}
+
+/* Tablet: 2 per row, Mobile: 1 per row */
+@media (max-width: 1024px) {
+	.eelaf-designers { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+	.eelaf-designers { grid-template-columns: 1fr; }
 }
