@@ -69,3 +69,74 @@ add_shortcode( 'eelaf_designers', function ( $atts ) {
 
 	return ob_get_clean();
 } );
+/**
+ * [eelaf_designs type="sketch" limit="4" show_title="yes"]
+ * Design cards: image, title, designer name and likes.
+ * type = a design_type slug: sketch, ai-model or matching (empty = all).
+ */
+add_shortcode( 'eelaf_designs', function ( $atts ) {
+	$atts = shortcode_atts( array(
+		'type'       => '',
+		'limit'      => 4,
+		'show_title' => 'yes',
+	), $atts, 'eelaf_designs' );
+
+	$query_args = array(
+		'post_type'      => 'design',
+		'posts_per_page' => (int) $atts['limit'],
+		'no_found_rows'  => true,
+	);
+
+	// Filter by design type (taxonomy) when one is given
+	if ( $atts['type'] ) {
+		$query_args['tax_query'] = array(
+			array(
+				'taxonomy' => 'design_type',
+				'field'    => 'slug',
+				'terms'    => sanitize_title( $atts['type'] ),
+			),
+		);
+	}
+
+	$designs = new WP_Query( $query_args );
+
+	if ( ! $designs->have_posts() ) {
+		return '<p class="eelaf-empty">No designs yet.</p>';
+	}
+
+	ob_start();
+	echo '<div class="eelaf-designs">';
+
+	while ( $designs->have_posts() ) {
+		$designs->the_post();
+		$designer = get_field( 'designer' );        // linked Designer post (or null)
+		$likes    = (int) get_field( 'likes' );
+		?>
+		<a class="eelaf-design-card" href="<?php the_permalink(); ?>">
+			<span class="eelaf-design-card__image">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<?php the_post_thumbnail( 'medium_large' ); ?>
+				<?php endif; ?>
+			</span>
+
+			<?php if ( 'yes' === $atts['show_title'] ) : ?>
+				<span class="eelaf-design-card__title"><?php echo esc_html( get_the_title() ); ?></span>
+			<?php endif; ?>
+
+			<span class="eelaf-design-card__meta">
+				<span class="eelaf-design-card__designer">
+					<?php echo $designer ? esc_html( get_the_title( $designer ) ) : ''; ?>
+				</span>
+				<?php if ( $likes ) : ?>
+					<span class="eelaf-design-card__likes">&#9825; <?php echo esc_html( eelaf_format_count( $likes ) ); ?></span>
+				<?php endif; ?>
+			</span>
+		</a>
+		<?php
+	}
+
+	echo '</div>';
+	wp_reset_postdata();
+
+	return ob_get_clean();
+} );
