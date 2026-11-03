@@ -79,6 +79,7 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 		'type'       => '',
 		'limit'      => 4,
 		'show_title' => 'yes',
+		'mine'       => 'no',   // yes = only the logged-in user's designs
 	), $atts, 'eelaf_designs' );
 
 	$query_args = array(
@@ -86,6 +87,14 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 		'posts_per_page' => (int) $atts['limit'],
 		'no_found_rows'  => true,
 	);
+
+	// Personal gallery: only designs created by the current user
+	if ( 'yes' === $atts['mine'] ) {
+		if ( ! is_user_logged_in() ) {
+			return '';
+		}
+		$query_args['author'] = get_current_user_id();
+	}
 
 	// Filter by design type (taxonomy) when one is given
 	if ( $atts['type'] ) {
@@ -101,7 +110,10 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 	$designs = new WP_Query( $query_args );
 
 	if ( ! $designs->have_posts() ) {
-		return '<p class="eelaf-empty">No designs yet.</p>';
+		$message = 'yes' === $atts['mine']
+			? 'Nothing saved here yet. Start creating and save your work!'
+			: 'No designs yet.';
+		return '<p class="eelaf-empty">' . esc_html( $message ) . '</p>';
 	}
 
 	ob_start();
@@ -190,5 +202,70 @@ add_shortcode( 'eelaf_feed', function ( $atts ) {
 	echo '</div>';
 	wp_reset_postdata();
 
+	return ob_get_clean();
+} );
+
+/**
+ * [eelaf_gallery limit="8"]
+ * Personal gallery: the logged-in user's own saved work,
+ * in tabs Matching / Sketch / AI Studio.
+ */
+add_shortcode( 'eelaf_gallery', function ( $atts ) {
+	$atts = shortcode_atts( array( 'limit' => 8 ), $atts, 'eelaf_gallery' );
+
+	// Personal gallery needs a logged-in user
+	if ( ! is_user_logged_in() ) {
+		return '<div class="eelaf-gallery eelaf-gallery--guest">'
+			. '<p>Sign in to see your saved sketches, AI designs and outfits.</p>'
+			. '<a class="eelaf-gallery__signin" href="' . esc_url( wp_login_url( get_permalink() ) ) . '">Sign in</a>'
+			. '</div>';
+	}
+
+	$tabs = array(
+		'matching' => 'Matching',
+		'sketch'   => 'Sketch',
+		'ai-model' => 'AI Studio',
+	);
+
+	ob_start();
+	?>
+	<div class="eelaf-gallery">
+		<div class="eelaf-gallery__tabs" role="tablist">
+			<?php $first = true; foreach ( $tabs as $slug => $label ) : ?>
+				<button type="button" role="tab"
+					class="eelaf-gallery__tab<?php echo $first ? ' is-active' : ''; ?>"
+					data-tab="<?php echo esc_attr( $slug ); ?>"
+					aria-selected="<?php echo $first ? 'true' : 'false'; ?>">
+					<?php echo esc_html( $label ); ?>
+				</button>
+			<?php $first = false; endforeach; ?>
+		</div>
+
+		<?php $first = true; foreach ( $tabs as $slug => $label ) : ?>
+			<div class="eelaf-gallery__panel<?php echo $first ? ' is-active' : ''; ?>"
+				data-panel="<?php echo esc_attr( $slug ); ?>" role="tabpanel">
+				<?php echo do_shortcode( '[eelaf_designs mine="yes" type="' . esc_attr( $slug ) . '" limit="' . (int) $atts['limit'] . '"]' ); ?>
+			</div>
+		<?php $first = false; endforeach; ?>
+	</div>
+
+	<script>
+	document.querySelectorAll('.eelaf-gallery').forEach(function (g) {
+		g.querySelectorAll('.eelaf-gallery__tab').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				g.querySelectorAll('.eelaf-gallery__tab').forEach(function (b) {
+					b.classList.remove('is-active');
+					b.setAttribute('aria-selected', 'false');
+				});
+				g.querySelectorAll('.eelaf-gallery__panel').forEach(function (p) {
+					p.classList.toggle('is-active', p.dataset.panel === btn.dataset.tab);
+				});
+				btn.classList.add('is-active');
+				btn.setAttribute('aria-selected', 'true');
+			});
+		});
+	});
+	</script>
+	<?php
 	return ob_get_clean();
 } );

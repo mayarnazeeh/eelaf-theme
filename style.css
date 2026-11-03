@@ -4,7 +4,7 @@
    Description:  Child theme of Hello Elementor for the EELAF website.
    Author:       Mayar Nazeeh
    Template:     hello-elementor
-   Version:      1.0.7
+   Version:      1.0.13
    Text Domain:  eelaf-child
    */
 /* Sticky header (stronger than UAE's .ehf-header #masthead) */
@@ -244,4 +244,93 @@ body.admin-bar.ehf-header #masthead {
 
 @media (max-width: 1024px) {
 	.eelaf-feed { grid-template-columns: 1fr; }
+}
+/* ===== Gallery tabs ===== */
+.eelaf-gallery {
+	width: 100%;
+	max-width: 1200px;
+	margin: 30px auto 0;
+}
+
+.eelaf-gallery .eelaf-gallery__tabs {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	margin-bottom: 28px;
+	flex-wrap: wrap;
+}
+
+.eelaf-gallery .eelaf-gallery__tab {
+	padding: 10px 28px;
+	border: 2px solid var(--e-global-color-primary, #163176);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+	color: var(--e-global-color-primary, #163176);
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.eelaf-gallery .eelaf-gallery__tab:hover,
+.eelaf-gallery .eelaf-gallery__tab:focus,
+.eelaf-gallery .eelaf-gallery__tab.is-active {
+	background: var(--e-global-color-primary, #163176);
+	border-color: var(--e-global-color-primary, #163176);
+	color: #A0F2ED;
+	outline: none;
+}
+
+.eelaf-gallery .eelaf-gallery__panel {
+	display: none;
+}
+
+.eelaf-gallery .eelaf-gallery__panel.is-active {
+	display: block;
+}
+
+/* no underline on design cards */
+body a.eelaf-design-card,
+body a.eelaf-design-card:hover,
+body a.eelaf-design-card *,
+body a.eelaf-designer-card,
+body a.eelaf-designer-card *,
+body a.eelaf-feed-card,
+body a.eelaf-feed-card * {
+	text-decoration: none !important;
+
+}
+/* ===== Gallery: guest message ===== */
+.eelaf-gallery--guest {
+	text-align: center;
+	padding: 40px 20px;
+	background: rgba(255, 255, 255, 0.85);
+	border-radius: 16px;
+}
+
+.eelaf-gallery--guest p {
+	color: var(--e-global-color-primary, #163176);
+	font-size: 18px;
+	margin-bottom: 16px;
+}
+
+body a.eelaf-gallery__signin {
+	display: inline-block;
+	padding: 10px 28px;
+	border-radius: 999px;
+	background: var(--e-global-color-primary, #163176);
+	color: #A0F2ED;
+	font-weight: 600;
+	text-decoration: none;
+}
+/* remove gap between header and page content */
+.elementor-page .site-main,
+.elementor-page .page-content,
+.elementor-page .page-header {
+	margin-top: 0;
+	padding-top: 0;
+}
+/* hide empty container left in the header template */
+#masthead .elementor-element-b39908c {
+	display: none;
 }
