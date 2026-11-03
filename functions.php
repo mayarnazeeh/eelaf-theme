@@ -79,7 +79,9 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 		'type'       => '',
 		'limit'      => 4,
 		'show_title' => 'yes',
-		'mine'       => 'no',   // yes = only the logged-in user's designs
+		'mine'          => 'no',   // yes = only the logged-in user's designs
+		'show_designer' => 'yes',  // no = hide the designer name (personal gallery)
+		'designer'      => '',     // a Designer post ID: only this designer's designs
 	), $atts, 'eelaf_designs' );
 
 	$query_args = array(
@@ -94,6 +96,16 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 			return '';
 		}
 		$query_args['author'] = get_current_user_id();
+	}
+
+	// Designer profile: only designs linked to this designer (ACF "designer" field)
+	if ( $atts['designer'] ) {
+		$query_args['meta_query'] = array(
+			array(
+				'key'   => 'designer',
+				'value' => (int) $atts['designer'],
+			),
+		);
 	}
 
 	// Filter by design type (taxonomy) when one is given
@@ -137,7 +149,13 @@ add_shortcode( 'eelaf_designs', function ( $atts ) {
 
 			<span class="eelaf-design-card__meta">
 				<span class="eelaf-design-card__designer">
-					<?php echo $designer ? esc_html( get_the_title( $designer ) ) : ''; ?>
+					<?php
+					if ( 'yes' === $atts['show_designer'] ) {
+						echo $designer ? esc_html( get_the_title( $designer ) ) : '';
+					} else {
+						echo esc_html( get_the_date() );   // personal gallery: show the save date instead
+					}
+					?>
 				</span>
 				<?php if ( $likes ) : ?>
 					<span class="eelaf-design-card__likes">&#9825; <?php echo esc_html( eelaf_format_count( $likes ) ); ?></span>
@@ -244,7 +262,7 @@ add_shortcode( 'eelaf_gallery', function ( $atts ) {
 		<?php $first = true; foreach ( $tabs as $slug => $label ) : ?>
 			<div class="eelaf-gallery__panel<?php echo $first ? ' is-active' : ''; ?>"
 				data-panel="<?php echo esc_attr( $slug ); ?>" role="tabpanel">
-				<?php echo do_shortcode( '[eelaf_designs mine="yes" type="' . esc_attr( $slug ) . '" limit="' . (int) $atts['limit'] . '"]' ); ?>
+				<?php echo do_shortcode( '[eelaf_designs mine="yes" show_designer="no" type="' . esc_attr( $slug ) . '" limit="' . (int) $atts['limit'] . '"]' ); ?>
 			</div>
 		<?php $first = false; endforeach; ?>
 	</div>

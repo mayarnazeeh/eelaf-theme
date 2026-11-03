@@ -4,7 +4,7 @@
    Description:  Child theme of Hello Elementor for the EELAF website.
    Author:       Mayar Nazeeh
    Template:     hello-elementor
-   Version:      1.0.13
+   Version:      1.0.17
    Text Domain:  eelaf-child
    */
 /* Sticky header (stronger than UAE's .ehf-header #masthead) */
@@ -333,4 +333,262 @@ body a.eelaf-gallery__signin {
 /* hide empty container left in the header template */
 #masthead .elementor-element-b39908c {
 	display: none;
+}
+/* ===== Single design page ===== */
+.eelaf-single-design {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 40px 20px 80px;
+}
+
+body a.eelaf-back {
+	display: inline-block;
+	margin-bottom: 24px;
+	color: var(--e-global-color-primary, #163176);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.eelaf-single-design__grid {
+	display: grid;
+	grid-template-columns: 1.1fr 1fr;
+	gap: 48px;
+	align-items: start;
+}
+
+.eelaf-single-design__image {
+	background: #FBF8F3;
+	border-radius: 20px;
+	padding: 16px;
+	box-shadow: 0 10px 30px rgba(22, 49, 118, 0.08);
+}
+
+.eelaf-single-design__image img {
+	width: 100%;
+	height: auto;
+	border-radius: 14px;
+	display: block;
+}
+
+.eelaf-badge {
+	display: inline-block;
+	padding: 6px 16px;
+	border-radius: 999px;
+	background: #A0F2ED;
+	color: var(--e-global-color-primary, #163176);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.eelaf-single-design__title {
+	margin: 16px 0 24px;
+	font-size: 44px;
+	color: var(--e-global-color-primary, #163176);
+}
+
+body a.eelaf-single-design__designer {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 14px 18px;
+	border-radius: 16px;
+	background: #FBF8F3;
+	color: var(--e-global-color-primary, #163176);
+	text-decoration: none;
+	margin-bottom: 20px;
+}
+
+.eelaf-single-design__designer small {
+	display: block;
+	color: var(--e-global-color-text, #6C6666);
+}
+
+.eelaf-single-design__avatar {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: #7FB8C4;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.eelaf-single-design__stats {
+	display: flex;
+	gap: 24px;
+	color: var(--e-global-color-text, #6C6666);
+	margin-bottom: 24px;
+}
+
+.eelaf-single-design__content {
+	line-height: 1.7;
+	color: var(--e-global-color-text, #6C6666);
+}
+
+@media (max-width: 900px) {
+	.eelaf-single-design__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.eelaf-single-design__title {
+		font-size: 32px;
+	}
+}
+/* single design: fonts */
+.eelaf-single-design__title {
+	font-family: var(--e-global-typography-primary-font-family), serif;
+	font-weight: 700;
+}
+
+.eelaf-single-design__content,
+.eelaf-single-design__content pre,
+.eelaf-single-design__content code {
+	font-family: inherit;
+	font-size: 17px;
+	white-space: normal;
+	background: none;
+	padding: 0;
+	border: 0;
+}
+/* owner actions on a design page */
+.eelaf-owner-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+body a.eelaf-btn {
+	padding: 10px 26px;
+	border-radius: 999px;
+	border: 2px solid var(--e-global-color-primary, #163176);
+	background: var(--e-global-color-primary, #163176);
+	color: #A0F2ED;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+body a.eelaf-btn--outline {
+	background: transparent;
+	color: var(--e-global-color-primary, #163176);
+}
+/* ===== Day 6 additions: paste at the END of style.css ===== */
+
+/* single design: fonts */
+.eelaf-single-design__title {
+	font-family: var(--e-global-typography-primary-font-family), serif;
+	font-weight: 700;
+}
+
+.eelaf-single-design__content,
+.eelaf-single-design__content pre,
+.eelaf-single-design__content code {
+	font-family: inherit;
+	font-size: 17px;
+	white-space: normal;
+	background: none;
+	padding: 0;
+	border: 0;
+}
+
+/* owner actions on a design page */
+.eelaf-owner-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+body a.eelaf-btn {
+	padding: 10px 26px;
+	border-radius: 999px;
+	border: 2px solid var(--e-global-color-primary, #163176);
+	background: var(--e-global-color-primary, #163176);
+	color: #A0F2ED;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+body a.eelaf-btn--outline {
+	background: transparent;
+	color: var(--e-global-color-primary, #163176);
+}
+
+/* ===== Designer profile page ===== */
+.eelaf-designer-page {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 40px 20px 80px;
+}
+
+.eelaf-designer-page__profile {
+	display: flex;
+	align-items: center;
+	gap: 32px;
+	padding: 32px;
+	border-radius: 20px;
+	background: #FBF8F3;
+	box-shadow: 0 10px 30px rgba(22, 49, 118, 0.08);
+	margin-bottom: 48px;
+}
+
+.eelaf-designer-page__avatar {
+	flex: 0 0 120px;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	background: #7FB8C4;
+	color: #fff;
+	font-size: 48px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.eelaf-designer-page__avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.eelaf-designer-page__name,
+.eelaf-designer-page__heading {
+	font-family: var(--e-global-typography-primary-font-family), serif;
+	color: var(--e-global-color-primary, #163176);
+	margin: 0 0 10px;
+}
+
+.eelaf-designer-page__name {
+	font-size: 40px;
+}
+
+.eelaf-designer-page__heading {
+	font-size: 28px;
+	margin-bottom: 24px;
+}
+
+.eelaf-designer-page__followers {
+	margin: 14px 0 8px;
+	color: var(--e-global-color-text, #6C6666);
+}
+
+.eelaf-designer-page__followers strong {
+	color: var(--e-global-color-primary, #163176);
+}
+
+.eelaf-designer-page__bio {
+	color: var(--e-global-color-text, #6C6666);
+	line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+	.eelaf-designer-page__profile {
+		flex-direction: column;
+		text-align: center;
+	}
 }
